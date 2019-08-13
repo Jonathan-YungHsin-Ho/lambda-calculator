@@ -12,7 +12,12 @@ const Numbers = props => {
   const [numberState, setNumberState] = useState(numbers);
 
   const numbersArray = numberState.map(element => (
-    <NumberButton key={element} value={element} numDisplay={props.numDisplay} />
+    <NumberButton
+      key={element}
+      className={element}
+      value={element}
+      numDisplay={props.numDisplay}
+    />
   ));
 
   return (

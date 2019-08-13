@@ -16,13 +16,34 @@ function App() {
   // Your functions should accept a parameter of the the item data being displayed to the DOM (ie - should receive 5 if the user clicks on
   // the "5" button, or the operator if they click one of those buttons) and then call your setter function to update state.
   // Don't forget to pass the functions (and any additional data needed) to the components as props
-  const [display, setDisplay] = useState(0);
+  const [display, setDisplay] = useState('');
+  const [stack, setStack] = useState([]);
+  const [firstNum, setFirstNum] = useState(0);
+  const [secondNum, setSecondNum] = useState(0);
+
+  const specialFunctions = input => {
+    if (input === 'C') {
+      setDisplay('');
+    } else if (input === '+/-') {
+      setDisplay(Number(display) * -1);
+    } else if (input === '%') {
+      setDisplay(Number(display) / 100);
+    }
+  };
 
   const numDisplay = input => {
     const inputArr = [];
     inputArr.push(display.toString());
     inputArr.push(input.toString());
     setDisplay(inputArr.join(''));
+  };
+
+  const operator = operation => {
+    console.log(display);
+    setStack(stack.push(Number(display)));
+    setStack(stack.push(operation));
+    setDisplay('');
+    console.log(stack);
   };
 
   return (
@@ -33,11 +54,11 @@ function App() {
         <Display display={display} />
         <div className="buttons">
           <div className="buttons-left">
-            <Specials />
+            <Specials specialFunctions={specialFunctions} />
             <Numbers numDisplay={numDisplay} />
           </div>
           <div className="buttons-right">
-            <Operators />
+            <Operators operator={operator} />
           </div>
         </div>
       </div>
