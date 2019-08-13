@@ -16,6 +16,7 @@ const Specials = () => {
        component matching the name on the provided file. Pass
        it any props needed by the child component*/}
       <h2>Specials component</h2>
+      {console.log(specialState)}
     </div>
   );
 };
