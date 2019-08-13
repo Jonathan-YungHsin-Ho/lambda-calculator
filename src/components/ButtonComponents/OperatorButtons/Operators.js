@@ -11,10 +11,8 @@ const Operators = () => {
   // STEP 2 - add the imported data to state
   const [operatorState, setOperatorState] = useState(operators);
 
-  console.log(operatorState);
-
   const operatorsArray = operatorState.map(element => (
-    <OperatorButton key="element.char" value={element.char} />
+    <OperatorButton key={element.char} value={element.char} />
   ));
 
   return (
