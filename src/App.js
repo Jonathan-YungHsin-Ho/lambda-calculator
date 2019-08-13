@@ -1,10 +1,14 @@
-import React from "react";
-import "./App.css";
+import React, { useState } from 'react';
+import './App.css';
 // STEP 4 - import the button and display components
 // Don't forget to import any extra css/scss files you build into the correct component
 
 // Logo has already been provided for you. Do the same for the remaining components
-import Logo from "./components/DisplayComponents/Logo";
+import Logo from './components/DisplayComponents/Logo';
+import Specials from './components/ButtonComponents/SpecialButtons/Specials';
+import Numbers from './components/ButtonComponents/NumberButtons/Numbers';
+import Operators from './components/ButtonComponents/OperatorButtons/Operators';
+import Display from './components/DisplayComponents/Display';
 
 function App() {
   // STEP 5 - After you get the components displaying using the provided data file, write your state hooks here.
@@ -13,11 +17,26 @@ function App() {
   // the "5" button, or the operator if they click one of those buttons) and then call your setter function to update state.
   // Don't forget to pass the functions (and any additional data needed) to the components as props
 
+  const styleContainer = {
+    backgroundColor: '#A81D36',
+    width: 470,
+    margin: '0 auto',
+    borderRadius: 15,
+    padding: 35,
+  };
+
   return (
-    <div className="container">
+    <div className="container" style={styleContainer}>
       <Logo />
       <div className="App">
         {/* STEP 4 - Render your components here and be sure to properly import/export all files */}
+        <Display />
+        <div className="buttons" />
+        <div>
+          <Specials />
+          <Numbers />
+        </div>
+        <Operators />
       </div>
     </div>
   );
