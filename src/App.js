@@ -17,26 +17,21 @@ function App() {
   // the "5" button, or the operator if they click one of those buttons) and then call your setter function to update state.
   // Don't forget to pass the functions (and any additional data needed) to the components as props
 
-  const styleContainer = {
-    backgroundColor: '#A81D36',
-    width: 470,
-    margin: '0 auto',
-    borderRadius: 15,
-    padding: 35,
-  };
-
   return (
-    <div className="container" style={styleContainer}>
+    <div className="container">
       <Logo />
       <div className="App">
         {/* STEP 4 - Render your components here and be sure to properly import/export all files */}
         <Display />
-        <div className="buttons" />
-        <div>
-          <Specials />
-          <Numbers />
+        <div className="buttons">
+          <div className="buttons-left">
+            <Specials />
+            <Numbers />
+          </div>
+          <div className="buttons-right">
+            <Operators />
+          </div>
         </div>
-        <Operators />
       </div>
     </div>
   );
