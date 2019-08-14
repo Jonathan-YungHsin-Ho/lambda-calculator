@@ -9,6 +9,7 @@ import Specials from './components/ButtonComponents/SpecialButtons/Specials';
 import Numbers from './components/ButtonComponents/NumberButtons/Numbers';
 import Operators from './components/ButtonComponents/OperatorButtons/Operators';
 import Display from './components/DisplayComponents/Display';
+import { equal } from 'uri-js';
 
 function App() {
   // STEP 5 - After you get the components displaying using the provided data file, write your state hooks here.
@@ -20,11 +21,8 @@ function App() {
   const [firstNum, setFirstNum] = useState(null);
   const [operation, setOperation] = useState(null);
   const [secondNum, setSecondNum] = useState(null);
-  // const [cumulative, setCumulative] = useState(null);
-  // const [toggleInput, setToggleInput] = useState(true);
-  // const [value, setValue] = useState();
   const [functional, setFunctional] = useState(true);
-  const [inputOn, setInputOn] = useState(true);
+  const [numInputOn, setNumInputOn] = useState(true);
 
   const specialFunctions = input => {
     if (input === 'C') {
@@ -32,44 +30,47 @@ function App() {
       setFirstNum(null);
       setSecondNum(null);
       setOperation(null);
-      // setCumulative(null);
       setFunctional(true);
-      setInputOn(true);
+      setNumInputOn(true);
     } else if (functional && input === '+/-') {
-      setDisplay(Number(display) * -1);
+      setDisplay(display * -1);
     } else if (functional && input === '%') {
-      setDisplay(Number(display) / 100);
+      setDisplay(display / 100);
     }
   };
 
   const numDisplay = input => {
-    if (functional && inputOn) {
+    if (functional && numInputOn) {
       const inputArr = [];
       inputArr.push(display.toString());
       inputArr.push(input.toString());
-      setDisplay(inputArr.join(''));
-      // console.log(inputArr.join('').length);
-      inputArr.join('').length >= 14 && setInputOn(false);
+      setDisplay(Number(inputArr.join('')));
+      inputArr.join('').length >= 14 && setNumInputOn(false);
     }
   };
 
   const operator = input => {
     if (functional) {
       if (input !== '=') {
-        setInputOn(true);
-        setFirstNum(parseFloat(display));
+        setNumInputOn(true);
+        setFirstNum(display);
         setOperation(input);
         setDisplay('');
-        return;
       } else if (input === '=') {
         setFunctional(false);
-        setSecondNum(parseFloat(display));
+        setSecondNum(display);
       }
     }
   };
 
-  const lengthCheck = input =>
-    input.toString().length >= 14 ? input.toExponential(8) : input;
+  const lengthCheck = input => {
+    if (input > 99999999999999) {
+      input = input.toExponential(8);
+    } else if (input.toString().length >= 14) {
+      input = input.toFixed(13 - input.toString().split('.')[0].length);
+    }
+    return input;
+  };
 
   useEffect(() => {
     if (secondNum) {
@@ -109,9 +110,7 @@ function App() {
           </div>
         </div>
       </div>
-      {/* <h1>Toggle Input: {toggleInput ? 'T' : 'F'}</h1>
-      <h1>Display: {display}</h1>
-      <h1>Cumulative: {cumulative}</h1>
+      {/* <h1>Display: {display}</h1>
       <h1>FirstNum: {firstNum}</h1>
       <h1>Operator: {operation}</h1>
       <h1>SecondNum: {secondNum}</h1> */}
