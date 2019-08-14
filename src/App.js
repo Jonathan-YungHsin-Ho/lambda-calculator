@@ -18,16 +18,16 @@ function App() {
   // Don't forget to pass the functions (and any additional data needed) to the components as props
   const [display, setDisplay] = useState('');
   // const [stack, setStack] = useState([]);
-  const [firstNum, setFirstNum] = useState(0);
-  const [operation, setOperation] = useState('');
-  const [secondNum, setSecondNum] = useState(0);
+  const [firstNum, setFirstNum] = useState(null);
+  const [operation, setOperation] = useState(null);
+  const [secondNum, setSecondNum] = useState(null);
 
   const specialFunctions = input => {
     if (input === 'C') {
       setDisplay('');
-      setFirstNum(0);
-      setSecondNum(0);
-      setOperation('');
+      setFirstNum(null);
+      setSecondNum(null);
+      setOperation(null);
     } else if (input === '+/-') {
       setDisplay(Number(display) * -1);
     } else if (input === '%') {
@@ -42,7 +42,6 @@ function App() {
     setDisplay(inputArr.join(''));
   };
 
-  // useEffect(() => {
   const operator = input => {
     console.log(input);
     if (input !== '=') {
@@ -51,20 +50,26 @@ function App() {
       setDisplay('');
       return;
     } else if (input === '=') {
-      console.log(secondNum);
       setSecondNum(parseFloat(display));
-      console.log(secondNum);
-      if (operation === '+') {
-        setDisplay(firstNum + secondNum);
-      } else if (operation === '-') {
-        setDisplay(firstNum - secondNum);
-      } else if (operation === '*') {
-        setDisplay(firstNum * secondNum);
-      } else if (operation === '/') {
-        setDisplay(firstNum / secondNum);
-      }
     }
   };
+
+  useEffect(() => {
+    secondNum && operation === '+' && setDisplay(firstNum + secondNum);
+  }, [firstNum, operation, secondNum]);
+
+  useEffect(() => {
+    secondNum && operation === '-' && setDisplay(firstNum - secondNum);
+  }, [firstNum, operation, secondNum]);
+
+  useEffect(() => {
+    secondNum && operation === 'x' && setDisplay(firstNum * secondNum);
+  }, [firstNum, operation, secondNum]);
+
+  useEffect(() => {
+    secondNum && operation === '/' && setDisplay(firstNum / secondNum);
+  }, [firstNum, operation, secondNum]);
+
   // }, [display, firstNum, secondNum, operation]);
   // if (input === '=' && operation) {
   //   setSecondNum(Number(display));
