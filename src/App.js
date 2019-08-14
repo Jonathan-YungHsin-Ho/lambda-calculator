@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 // STEP 4 - import the button and display components
 // Don't forget to import any extra css/scss files you build into the correct component
@@ -17,13 +17,17 @@ function App() {
   // the "5" button, or the operator if they click one of those buttons) and then call your setter function to update state.
   // Don't forget to pass the functions (and any additional data needed) to the components as props
   const [display, setDisplay] = useState('');
-  const [stack, setStack] = useState([]);
+  // const [stack, setStack] = useState([]);
   const [firstNum, setFirstNum] = useState(0);
+  const [operation, setOperation] = useState('');
   const [secondNum, setSecondNum] = useState(0);
 
   const specialFunctions = input => {
     if (input === 'C') {
       setDisplay('');
+      setFirstNum(0);
+      setSecondNum(0);
+      setOperation('');
     } else if (input === '+/-') {
       setDisplay(Number(display) * -1);
     } else if (input === '%') {
@@ -38,13 +42,53 @@ function App() {
     setDisplay(inputArr.join(''));
   };
 
-  const operator = operation => {
-    console.log(display);
-    setStack(stack.push(Number(display)));
-    setStack(stack.push(operation));
-    setDisplay('');
-    console.log(stack);
+  // useEffect(() => {
+  const operator = input => {
+    console.log(input);
+    if (input !== '=') {
+      setFirstNum(parseFloat(display));
+      setOperation(input);
+      setDisplay('');
+      return;
+    } else if (input === '=') {
+      console.log(secondNum);
+      setSecondNum(parseFloat(display));
+      console.log(secondNum);
+      if (operation === '+') {
+        setDisplay(firstNum + secondNum);
+      } else if (operation === '-') {
+        setDisplay(firstNum - secondNum);
+      } else if (operation === '*') {
+        setDisplay(firstNum * secondNum);
+      } else if (operation === '/') {
+        setDisplay(firstNum / secondNum);
+      }
+    }
   };
+  // }, [display, firstNum, secondNum, operation]);
+  // if (input === '=' && operation) {
+  //   setSecondNum(Number(display));
+  //   if (operation === '+') {
+  //     setDisplay(firstNum + secondNum);
+  //   } else if (operation === '-') {
+  //     setDisplay(firstNum - secondNum);
+  //   } else if (operation === '*') {
+  //     setDisplay(firstNum * secondNum);
+  //   } else if (operation === '/') {
+  //     setDisplay(firstNum / secondNum);
+  //   }
+  // } else if (operation === null) {
+  //   return;
+  // } else {
+  //   setFirstNum(Number(display));
+  //   setOperation(input);
+  //   setDisplay('');
+  // }
+  // console.log(display);
+  // setStack(stack.push(Number(display)));
+  // setStack(stack.push(operation));
+  // setDisplay('');
+  // console.log(input);
 
   return (
     <div className="container">
@@ -62,6 +106,10 @@ function App() {
           </div>
         </div>
       </div>
+      <h1>Display: {display}</h1>
+      <h1>FirstNum: {firstNum}</h1>
+      <h1>Operator: {operation}</h1>
+      <h1>SecondNum: {secondNum}</h1>
     </div>
   );
 }
