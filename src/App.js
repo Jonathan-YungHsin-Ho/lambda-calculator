@@ -17,10 +17,14 @@ function App() {
   // the "5" button, or the operator if they click one of those buttons) and then call your setter function to update state.
   // Don't forget to pass the functions (and any additional data needed) to the components as props
   const [display, setDisplay] = useState('');
-  // const [stack, setStack] = useState([]);
   const [firstNum, setFirstNum] = useState(null);
   const [operation, setOperation] = useState(null);
   const [secondNum, setSecondNum] = useState(null);
+  // const [cumulative, setCumulative] = useState(null);
+  // const [toggleInput, setToggleInput] = useState(true);
+  // const [value, setValue] = useState();
+  const [functional, setFunctional] = useState(true);
+  const [inputOn, setInputOn] = useState(true);
 
   const specialFunctions = input => {
     if (input === 'C') {
@@ -28,72 +32,66 @@ function App() {
       setFirstNum(null);
       setSecondNum(null);
       setOperation(null);
-    } else if (input === '+/-') {
+      // setCumulative(null);
+      setFunctional(true);
+      setInputOn(true);
+    } else if (functional && input === '+/-') {
       setDisplay(Number(display) * -1);
-    } else if (input === '%') {
+    } else if (functional && input === '%') {
       setDisplay(Number(display) / 100);
     }
   };
 
   const numDisplay = input => {
-    const inputArr = [];
-    inputArr.push(display.toString());
-    inputArr.push(input.toString());
-    setDisplay(inputArr.join(''));
-  };
-
-  const operator = input => {
-    console.log(input);
-    if (input !== '=') {
-      setFirstNum(parseFloat(display));
-      setOperation(input);
-      setDisplay('');
-      return;
-    } else if (input === '=') {
-      setSecondNum(parseFloat(display));
+    if (functional && inputOn) {
+      const inputArr = [];
+      inputArr.push(display.toString());
+      inputArr.push(input.toString());
+      setDisplay(inputArr.join(''));
+      // console.log(inputArr.join('').length);
+      inputArr.join('').length >= 14 && setInputOn(false);
     }
   };
 
-  useEffect(() => {
-    secondNum && operation === '+' && setDisplay(firstNum + secondNum);
-  }, [firstNum, operation, secondNum]);
+  const operator = input => {
+    if (functional) {
+      if (input !== '=') {
+        setInputOn(true);
+        setFirstNum(parseFloat(display));
+        setOperation(input);
+        setDisplay('');
+        return;
+      } else if (input === '=') {
+        setFunctional(false);
+        setSecondNum(parseFloat(display));
+      }
+    }
+  };
+
+  const lengthCheck = input =>
+    input.toString().length >= 14 ? input.toExponential(8) : input;
 
   useEffect(() => {
-    secondNum && operation === '-' && setDisplay(firstNum - secondNum);
-  }, [firstNum, operation, secondNum]);
-
-  useEffect(() => {
-    secondNum && operation === 'x' && setDisplay(firstNum * secondNum);
-  }, [firstNum, operation, secondNum]);
-
-  useEffect(() => {
-    secondNum && operation === '/' && setDisplay(firstNum / secondNum);
-  }, [firstNum, operation, secondNum]);
-
-  // }, [display, firstNum, secondNum, operation]);
-  // if (input === '=' && operation) {
-  //   setSecondNum(Number(display));
-  //   if (operation === '+') {
-  //     setDisplay(firstNum + secondNum);
-  //   } else if (operation === '-') {
-  //     setDisplay(firstNum - secondNum);
-  //   } else if (operation === '*') {
-  //     setDisplay(firstNum * secondNum);
-  //   } else if (operation === '/') {
-  //     setDisplay(firstNum / secondNum);
-  //   }
-  // } else if (operation === null) {
-  //   return;
-  // } else {
-  //   setFirstNum(Number(display));
-  //   setOperation(input);
-  //   setDisplay('');
-  // }
-  // console.log(display);
-  // setStack(stack.push(Number(display)));
-  // setStack(stack.push(operation));
-  // setDisplay('');
-  // console.log(input);
+    if (secondNum) {
+      if (operation === '+') {
+        let value = firstNum + secondNum;
+        value = lengthCheck(value);
+        setDisplay(value);
+      } else if (operation === '-') {
+        let value = firstNum - secondNum;
+        value = lengthCheck(value);
+        setDisplay(value);
+      } else if (operation === 'x') {
+        let value = firstNum * secondNum;
+        value = lengthCheck(value);
+        setDisplay(value);
+      } else if (operation === '/') {
+        let value = firstNum / secondNum;
+        value = lengthCheck(value);
+        setDisplay(value);
+      }
+    }
+  }, [secondNum, operation, firstNum, display]);
 
   return (
     <div className="container">
@@ -111,10 +109,12 @@ function App() {
           </div>
         </div>
       </div>
+      {/* <h1>Toggle Input: {toggleInput ? 'T' : 'F'}</h1>
       <h1>Display: {display}</h1>
+      <h1>Cumulative: {cumulative}</h1>
       <h1>FirstNum: {firstNum}</h1>
       <h1>Operator: {operation}</h1>
-      <h1>SecondNum: {secondNum}</h1>
+      <h1>SecondNum: {secondNum}</h1> */}
     </div>
   );
 }
