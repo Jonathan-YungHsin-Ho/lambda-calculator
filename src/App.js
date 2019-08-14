@@ -48,12 +48,14 @@ function App() {
 
   // Takes input as a string then converts to number with maximum 14 digits
   const numDisplay = input => {
-    if (newOperation && numInputOn) {
+    if (newOperation) {
       const inputArr = [];
       inputArr.push(display.toString());
       inputArr.push(input.toString());
       setDisplay(Number(inputArr.join('')));
       inputArr.join('').length >= 14 && setNumInputOn(false);
+    } else if (!newOperation) {
+      reInitState();
     }
   };
 
@@ -61,7 +63,6 @@ function App() {
   const operator = input => {
     if (newOperation) {
       if (input !== '=') {
-        setNumInputOn(true);
         setFirstNum(display);
         setOperation(input);
         setDisplay('');
@@ -121,11 +122,11 @@ function App() {
           </div>
         </div>
       </div>
-      <h1>New Operation: {newOperation ? 'Yes' : 'No'}</h1>
+      {/* <h1>New Operation: {newOperation ? 'Yes' : 'No'}</h1>
       <h1>Display: {display}</h1>
       <h1>FirstNum: {firstNum}</h1>
       <h1>Operator: {operation}</h1>
-      <h1>SecondNum: {secondNum}</h1>
+      <h1>SecondNum: {secondNum}</h1> */}
     </div>
   );
 }
